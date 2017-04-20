@@ -1,0 +1,26 @@
+{
+  "name": "parsing",
+  "version": "1.0.0",
+  "description": "parsing my expense written as Short Messages (String) using jison",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "jison": "0.4.17"
+    },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sushiljainam/parsing.git"
+  },
+  "keywords": [
+    "parsing",
+    "grammar"
+  ],
+  "author": "Sushil Jain",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sushiljainam/parsing/issues"
+  },
+  "homepage": "https://github.com/sushiljainam/parsing#readme"
+}
