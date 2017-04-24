@@ -2,7 +2,7 @@
 * @Author: Sushil Jain
 * @Date:   2017-04-20 13:09:29
 * @Last Modified by:   sushiljainam
-* @Last Modified time: 2017-04-24 13:09:24
+* @Last Modified time: 2017-04-24 13:12:24
 */
 
 var Parser = require("jison").Parser
@@ -54,4 +54,7 @@ var parser = new Parser(grammar);
 
 
 // example: use it like this
-var r = parser.parse("string");
+// var r = parser.parse("string");
+
+// export it
+module.exports.parser = parser;

@@ -4,7 +4,7 @@
   "description": "parsing my expense written as Short Messages (String) using jison",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/test1"
   },
   "dependencies": {
     "jison": "0.4.17"
