@@ -2,7 +2,7 @@
 * @Author: Sushil Jain
 * @Date:   2017-04-24 12:58:35
 * @Last Modified by:   sushiljainam
-* @Last Modified time: 2017-04-24 13:21:58
+* @Last Modified time: 2017-04-24 14:47:27
 */
 
 var parser = require("../index").parser;
@@ -39,4 +39,19 @@ for (var i = 0; i < testData.strings.length; i++) {
 
 console.log(JSON.stringify(output.objects));
 
+// start analyzing and create reports
+// 
+// records for a date
+// records for a month
+// records for an author
+// records for a particular "area of expense"
+// get total for date/author/string
+// e.g. total("room rent")
+// e.g. total("umesh")
+// e.g. total("tiffin")
+// e.g. total("shake")
+// 
+// group by date
+// group by "meta.by"
+// count frequencies on various aspects
 
