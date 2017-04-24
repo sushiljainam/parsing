@@ -2,7 +2,7 @@
 * @Author: Sushil Jain
 * @Date:   2017-04-24 12:58:35
 * @Last Modified by:   sushiljainam
-* @Last Modified time: 2017-04-24 15:54:41
+* @Last Modified time: 2017-04-24 16:52:25
 */
 
 var parser = require("../index").parser;
@@ -37,6 +37,10 @@ for (var i = 0; i < testData.strings.length; i++) {
 	output.objects.push(parser.parse(testData.strings[i]));
 };
 
+output.rawData = JSON.stringify(output.objects);
+
+calculateTotalForTrans();
+
 // console.log(JSON.stringify(output.objects));
 
 // start analyzing and create reports
@@ -67,11 +71,16 @@ function freqOfAny (output, keyRepo, from) {
 			if(m==n){
 				output.reports[keyRepo][j].count++; flag = true; 
 				output.reports[keyRepo][j].refs.push(i);
+				output.reports[keyRepo][j].total.expense += output.objects[i].trans.type=="EXPENSE" ? output.objects[i].trans.total : 0;
+				output.reports[keyRepo][j].total.income += output.objects[i].trans.type=="INCOME" ? output.objects[i].trans.total : 0;
 				break;
 			}
 		};
 		if(!flag){
-			output.reports[keyRepo].push({value: n, count: 1, refs: [i]});
+			var toPush = {value: n, count: 1, refs: [i], total: {}};
+			toPush.total.expense = output.objects[i].trans.type=="EXPENSE" ? output.objects[i].trans.total : 0;
+			toPush.total.income = output.objects[i].trans.type=="INCOME" ? output.objects[i].trans.total : 0;
+			output.reports[keyRepo].push(toPush);
 		}
 	};
 }
@@ -83,7 +92,6 @@ freqOfDates(output)
 console.log(JSON.stringify(output.reports));
 
 function getValue (obj, deep) {
-	var toReturn = undefined;
 	var t = deep.split('.'); var i=0;
 	while(/*typeof obj == 'object' &&*/ i<t.length){
 		obj = obj[t[i++]];
@@ -91,3 +99,12 @@ function getValue (obj, deep) {
 	return obj;
 }
 
+
+function calculateTotalForTrans () {
+	for (var i = 0; i < output.objects.length; i++) {
+		output.objects[i].trans.total = 0;
+		for (var j = 0; j < output.objects[i].trans.entries.length; j++) {
+			output.objects[i].trans.total += parseInt(output.objects[i].trans.entries[j].amount);
+		};
+	};
+}
