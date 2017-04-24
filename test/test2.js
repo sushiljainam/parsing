@@ -2,7 +2,7 @@
 * @Author: Sushil Jain
 * @Date:   2017-04-24 12:58:35
 * @Last Modified by:   sushiljainam
-* @Last Modified time: 2017-04-24 15:45:18
+* @Last Modified time: 2017-04-24 15:54:41
 */
 
 var parser = require("../index").parser;
@@ -37,7 +37,7 @@ for (var i = 0; i < testData.strings.length; i++) {
 	output.objects.push(parser.parse(testData.strings[i]));
 };
 
-console.log(JSON.stringify(output.objects));
+// console.log(JSON.stringify(output.objects));
 
 // start analyzing and create reports
 // 
@@ -55,4 +55,39 @@ console.log(JSON.stringify(output.objects));
 // group by "meta.by"
 // count frequencies on various aspects
 
-// see in test2
+output.reports = {};
+
+function freqOfAny (output, keyRepo, from) {
+	output.reports[keyRepo] = [];
+	for (var i = 0; i < output.objects.length; i++) {
+		var n = getValue(output.objects[i], from);
+		var flag = false;
+		for (var j = 0; j < output.reports[keyRepo].length; j++) {
+			var m = output.reports[keyRepo][j].value;
+			if(m==n){
+				output.reports[keyRepo][j].count++; flag = true; 
+				output.reports[keyRepo][j].refs.push(i);
+				break;
+			}
+		};
+		if(!flag){
+			output.reports[keyRepo].push({value: n, count: 1, refs: [i]});
+		}
+	};
+}
+
+var freqOfAuthor = freqOfAny.bind(null, output, 'authors', 'meta.by');
+var freqOfDates = freqOfAny.bind(null, output, 'dates', 'meta.at.date');
+freqOfAuthor(output)
+freqOfDates(output)
+console.log(JSON.stringify(output.reports));
+
+function getValue (obj, deep) {
+	var toReturn = undefined;
+	var t = deep.split('.'); var i=0;
+	while(/*typeof obj == 'object' &&*/ i<t.length){
+		obj = obj[t[i++]];
+	}
+	return obj;
+}
+
