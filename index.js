@@ -11,12 +11,13 @@ var grammar = {
 		"lex": {
 				"rules": [
 					["\\s+", "/* skip whitespace */"],
-					["([0-9]{2}[/][0-9]{2}[/][0-9]{4})", "return 'DATE';"],
+					["([0-9]{2}[/][0-9]{2}[/][0-9]{2,4})", "return 'DATE';"],
 					["([0-9]?[0-9][:][0-9]{2}[ ](AM|PM))", "return 'TIME';"],
-					["[0-9]+", "return 'NUMBER';"],
+					["\\s[0-9]+\\s", "return 'NUMBER';"],
+					["Due", "return 'DUE';"],
 					["Ex.", "return 'EXPENSE';"],
 					["In.", "return 'INCOME';"],
-					["[a-zA-Z]+", "return 'WORD';"],
+					["[a-zA-Z.]+", "return 'WORD';"],
 					["[,]", "return 'COMMA';"],
 					["[-]", "return 'HYPHEN';"],
 					["[:]", "return 'COLON';"]
@@ -33,6 +34,7 @@ var grammar = {
 		"by": [
 			["words", "$$ = $1;"]],
 		"tran" :[ 
+			["DUE entries", "$$ = {type: 'DUE', entries: $2};"],
 			["EXPENSE entries", "$$ = {type: 'EXPENSE', entries: $2};"],
 			["INCOME entries", "$$ = {type: 'INCOME', entries: $2};"] ],
 		"entries" : [ 
@@ -42,7 +44,7 @@ var grammar = {
 		"entry" :[ 
 			["words NUMBER words", "$$ = {amount: $2, title: $1, comments: $3};"],
 			["words NUMBER", "$$ = {amount: $2, title: $1};"],
-			["NUMBER", "$$ = {amount: $1};"] ],
+			["NUMBER", "$$ = {amount: $1, title:'untitled'};"] ],
 		"words" : [ 
 			["words WORD", "$$ = ''+$1+' '+$2"],
 			["WORD", "$$ = $1"] ],
